@@ -1,38 +1,25 @@
+// Point d'entrée du programme
+// Usage : java Main grille.txt
+//      ou java Main (saisie manuelle)
+
 public class Main {
-
     public static void main(String[] args) {
+        int[][] grille;
 
-        Sudoku sudoku;
-
-        try {
-            // 🔹 Si un fichier est donné en argument
-            if (args.length > 0) {
-                sudoku = SudokuLoader.chargerDepuisFichier(args[0]);
-            } else {
-                // 🔹 Sinon utiliser grille.txt par défaut
-                sudoku = SudokuLoader.chargerDepuisFichier("grille.txt");
-            }
-
-        } catch (Exception e) {
-            System.out.println(" Erreur lors du chargement du fichier !");
-            System.out.println("Vérifiez que le fichier existe et est bien formaté.");
-            return;
+        if (args.length > 0) {
+            grille = Loader.depuisFichier(args[0]);
+        } else {
+            grille = Loader.depuisSaisie();
         }
 
-        // 🔹 Affichage initial
         System.out.println("\nGrille initiale :");
-        SudokuPrinter.afficher(sudoku);
+        Affichage.afficher(grille);
 
-        // 🔹 Résolution
-        System.out.println("\nRésolution en cours...");
-        boolean solved = SudokuSolver.solve(sudoku);
-
-        // 🔹 Résultat
-        if (solved) {
-            System.out.println("\nGrille résolue :");
-            SudokuPrinter.afficher(sudoku);
+        if (Solver.resoudre(grille)) {
+            System.out.println("Grille resolue :");
+            Affichage.afficher(grille);
         } else {
-            System.out.println("\n Aucune solution trouvée !");
+            System.out.println("Cette grille n'a pas de solution.");
         }
     }
 }
